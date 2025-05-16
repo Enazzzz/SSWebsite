@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
-</head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>savetheunion.gov</title>
+  <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
   <style>
     html, body {
       margin: 0;
@@ -78,7 +77,7 @@
       padding: 10px 0;
       background: rgba(37, 37, 37, 0.8);
       color: #ffffff;
-      position: fixed;
+      position: absolute;
       bottom: 0;
       width: 100%;
       box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
@@ -173,19 +172,22 @@
     ::-webkit-scrollbar-thumb:hover {
       background: #888;
     }
-    .blurred::before {
+
+    /* ✅ Unified blur overlay using wrapper */
+    #page-blur-wrapper.blurred::before {
       content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-      background-color: rgba(0, 0, 0, 0.2); /* Optional dark overlay */
+      background-color: rgba(0, 0, 0, 0.2);
       z-index: 11;
       pointer-events: none;
     }
-    
+
     .page-header {
       display: flex;
       justify-content: space-between;
@@ -194,31 +196,31 @@
       padding: 10px 20px;
       position: relative;
     }
-    
+
     .left, .center, .right {
       flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    
+
     .left {
       justify-content: flex-start;
-      gap: 10px; /* space between logo and text */
+      gap: 10px;
     }
-    
+
     .logo {
-      width: 80px;       /* Base size */
-      height: 90px;      /* Keeps aspect ratio */
+      width: 80px;
+      height: 90px;
     }
-    
+
     .union-text {
       color: #ffffff;
       font-size: 1.5rem;
       white-space: nowrap;
       font-style: bold;
       font-family: 'Satisfy', cursive;
-    }    
+    }
   </style>
 </head>
 
@@ -227,30 +229,38 @@
     <img src="/images/background.jpg" alt="Background" class="background-image" />
   </div>
 
-  <header id="header" class="page-header">
-    <div class="left">
-      <img src="/images/union-logo.png" alt="Union Logo" class="logo" />
-      <span class="union-text">The Union</span>
-    </div>
-    <div class="center">
-      <h1 class="site-title">Welcome to the Union, soldier!</h1>
-    </div>
-    <div class="right"></div>
-  </header>
-   
+  <!-- ✅ New Blur Wrapper -->
+  <div id="page-blur-wrapper">
+    <header id="header" class="page-header">
+      <div class="left">
+        <img src="/images/union-logo.png" alt="Union Logo" class="logo" />
+        <span class="union-text">The Union</span>
+      </div>
+      <div class="center">
+        <h1 class="site-title">Welcome to the Union, soldier!</h1>
+      </div>
+      <div class="right"></div>
+    </header>
 
-  <div class="content" id="content">
-    <main>
-      <h2>Placeholder Heading</h2>
-      <p>This is your placeholder text area. Add your content here. (skibidi toilet) Scroll to see more.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
-      <p>Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris.</p>
-      <p>Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla.</p>
-      <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
-      <p>Curabitur sodales ligula in libero. Sed dignissim lacinia nunc.</p>
-      <p>...</p>
-      <!-- Tracking Event Button -->
-    </main>
+    <div class="content" id="content">
+      <main>
+        <h2>Placeholder Heading</h2>
+        <p>This is your placeholder text area. Add your content here. (skibidi toilet) Scroll to see more.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+        <p>More text here...</p>
+      </main>
+    </div>
+
+    <footer>
+      <p>&copy; 2023 Zane</p>
+      <div class="footer-links">
+        <a href="#" onclick="openGmail()">Contact</a>
+        <a href="../index.html">Home</a>
+        <a href="about.html">About</a>
+        <button id="logout-button" style="display: none;" onclick="logout()">Logout</button>
+        <button id="signin-button" style="display: none;" onclick="window.location.href='signup.html'">Sign In</button>
+      </div>
+    </footer>
   </div>
 
   <div class="input-container" id="input-container">
@@ -264,37 +274,27 @@
     </div>
   </div>
 
-  <footer>
-    <p>&copy; 2023 Zane</p>
-    <div class="footer-links">
-      <a href="#" onclick="openGmail()">Contact</a>
-      <a href="../index.html">Home</a>
-      <a href="about.html">About</a>
-      <button id="logout-button" style="display: none;" onclick="logout()">Logout</button>
-      <button id="signin-button" style="display: none;" onclick="window.location.href='signup.html'">Sign In</button>
-    </div>
-  </footer>
   <script>
     function openGmail() {
       window.open('https://mail.google.com/mail/?view=cm&fs=1&to=zaneamater@gmail.com', '_blank');
     }
 
     const inputContainer = document.getElementById('input-container');
-    const content = document.getElementById('content');
-    const header = document.getElementById('header');
+    const pageWrapper = document.getElementById('page-blur-wrapper');
 
     function showInputContainer() {
-        inputContainer.style.display = 'flex';
-        content.classList.add('blurred');
-        header.classList.add('blurred');
-        document.querySelector('footer').classList.add('blurred');
+      inputContainer.style.display = 'flex';
+      pageWrapper.classList.add('blurred');
+    }
+
+    function hideInputContainer() {
+      inputContainer.style.display = 'none';
+      pageWrapper.classList.remove('blurred');
     }
 
     const storedName = localStorage.getItem('userName');
     if (storedName) {
-      inputContainer.style.display = 'none';
-      content.classList.remove('blurred');
-      header.classList.remove('blurred');
+      hideInputContainer();
       document.getElementById('logout-button').style.display = 'inline';
     } else {
       showInputContainer();
@@ -304,7 +304,8 @@
     document.getElementById('login-button').addEventListener('click', function () {
       const soldierName = document.getElementById('soldier-name-input').value;
       const password = document.getElementById('password-input').value;
-      fetch('http://localhost:3000/credentials')
+
+      fetch('/credentials')
         .then(response => response.json())
         .then(credentials => {
           const user = credentials.find(cred => cred.soldierName === soldierName);
@@ -316,9 +317,7 @@
               messageElement.style.color = 'green';
               messageElement.innerText = 'Correct password, signing in!';
               messageElement.style.display = 'block';
-              inputContainer.style.display = 'none';
-              content.classList.remove('blurred');
-              header.classList.remove('blurred');
+              hideInputContainer();
               document.getElementById('logout-button').style.display = 'inline';
               document.getElementById('signin-button').style.display = 'none';
             } else {
@@ -341,19 +340,12 @@
         });
     });
 
-    function hideInputContainer() {
-        inputContainer.style.display = 'none';
-        content.classList.remove('blurred');
-        header.classList.remove('blurred');
-        document.querySelector('footer').classList.remove('blurred');
-    }
-
     function logout() {
-        localStorage.removeItem("userName");
-        location.reload();
+      localStorage.removeItem("userName");
+      location.reload();
     }
 
-    // 🎞️ Parallax Zoom Scroll Background
+    // 🎞️ Parallax background
     const bgImage = document.querySelector(".background-image");
     window.addEventListener("scroll", () => {
       const scrollY = window.scrollY;
@@ -361,33 +353,31 @@
       bgImage.style.transform = `scale(1.2) translateY(${scrollY * parallaxSpeed}px)`;
     });
 
-    // 🛰️ Tracking system
+    // 🛰️ Tracking
     function sendTrackingEvent(eventType, extraData = {}) {
-      console.log("sendTrackingEvent function triggered");  // Add this log
-
       const data = {
-          eventType: eventType,
-          timestamp: new Date().toISOString(),
-          userAgent: navigator.userAgent,
-          screenWidth: window.innerWidth,
-          screenHeight: window.innerHeight,
-          referrer: document.referrer,
-          url: window.location.href,
-          ...extraData
+        eventType: eventType,
+        timestamp: new Date().toISOString(),
+        userAgent: navigator.userAgent,
+        screenWidth: window.innerWidth,
+        screenHeight: window.innerHeight,
+        referrer: document.referrer,
+        url: window.location.href,
+        ...extraData
       };
 
-      fetch('http://localhost:3000/track', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-      }).then(response => {
-          console.log('Tracking event sent successfully');
-      }).catch((err) => {
-          console.error('Tracking error:', err);
+      fetch('/track', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      }).then(() => {
+        console.log('Tracking event sent');
+      }).catch(err => {
+        console.error('Tracking error:', err);
       });
-  }
+    }
   </script>
-  </body>
+</body>
 </html>

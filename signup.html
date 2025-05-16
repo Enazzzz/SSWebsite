@@ -141,7 +141,7 @@
             const newUser = { soldierName: newSoldierName, password: newPassword };
 
             // Send a POST request to add the new user
-            fetch('http://localhost:3000/credentials', {
+            fetch('/credentials', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

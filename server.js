@@ -85,6 +85,4 @@ app.use((err, req, res, next) => {
 
 
 // ── Start Server ───────────────────────────────────────────────────
-app.listen(PORT, () => {
-  console.log(`🚀 Server is running at http://localhost:${PORT}`);
-});
+app.listen(3000, '0.0.0.0', () => console.log("Server running on all interfaces, http://localhost:3000"));
