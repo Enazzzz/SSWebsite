@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link rel="stylesheet" href="../assets/styles/styles.css"> <!-- Link to your CSS file -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #585858;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensure the body takes at least the full height of the viewport */
+        }
+        header {
+            background: #252525;
+            color: #ffffff;
+            padding: 10px 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Add shadow for depth */
+            z-index: 10; /* Ensure header is above other content */
+        }
+        main {
+            text-align: center;
+            background-color: #585858;
+            flex: 1; /* Allow main to grow and take available space */
+            padding: 20px; /* Add some padding for content */
+            border-radius: 15px; /* Rounded corners */
+            overflow: hidden; /* Ensure content doesn't overflow */
+        }
+        p {
+            margin: 0; /* Remove default margin from paragraph */
+        }
+        footer {
+            text-align: center;
+            padding: 5px 0; /* Adjusted padding for the footer */
+            background: rgba(37, 37, 37, 0.8); /* Slightly transparent background */
+            color: #ffffff;
+            position: fixed; /* Fix the footer to the bottom */
+            bottom: 0; /* Position it at the bottom */
+            width: 100%; /* Make it full width */
+            border-top-left-radius: 15px; /* Rounded corners */
+            border-top-right-radius: 15px; /* Rounded corners */
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3); /* Add shadow for depth */
+        }
+        .footer-links {
+            margin-top: 5px; /* Space above the links */
+            font-size: 14px; /* Smaller font size for links */
+        }
+        .footer-links a {
+            color: #ffffff; /* Link color */
+            text-decoration: none; /* Remove underline */
+            margin: 0 10px; /* Space between links */
+        }
+        .footer-links a:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+        .placeholder-content {
+            background: #777; 
+            color: white; 
+            padding: 20px; 
+            border-radius: 15px; /* Rounded corners for the placeholder content */
+        }
+        html {
+            overflow-y: scroll; /* Always show vertical scrollbar */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>About Us</h1>
+        <!-- Removed navigation links from header -->
+    </header>
+    
+    <div class="content" id="content">
+        <main>
+            <p>Welcome to the About Us page!</p>
+            <p>Here you can learn more about our mission, values, and team.</p>
+            <div class="placeholder-content">
+                <h2>Our Mission</h2>
+                <p>Our mission is to provide quality content and resources for social studies education.</p>
+                
+                <h2>Our Team</h2>
+                <p>We are a dedicated team of educators and content creators passionate about social studies.</p>
+                
+                <h2>Our History</h2>
+                <p>Founded in 2023, we have been committed to enhancing social studies education through innovative resources.</p>
+            </div>
+        </main>
+    </div>
+    
+    <footer>
+        <p>&copy; 2023 Zane</p>
+        <div class="footer-links">
+            <a href="#" onclick="openGmail()">Contact</a>
+            <a href="../index.html">Home</a>
+            <a href="about.html">About</a>
+            <button id="logout-button" style="display: none;" onclick="logout()">Logout</button>
+            <button id="signin-button" style="display: none;" onclick="window.location.href='../index.html'">Sign In</button>
+        </div>
+    </footer>
+    <script>
+        // Function to open Gmail compose window
+        function openGmail() {
+            window.open('https://mail.google.com/mail/?view=cm&fs=1&to=zaneamater@gmail.com', '_blank');
+        }
+
+        // Check if a name is already stored in localStorage
+        const storedName = localStorage.getItem("userName");
+        console.log("Stored Name in about.html:", storedName); // Debugging log
+        if (storedName) {
+            console.log(`Welcome back, ${storedName}!`);
+            document.getElementById("logout-button").style.display = "inline"; // Show logout button
+        } else {
+            console.log("No user is logged in.");
+            document.getElementById("signin-button").style.display = "inline"; // Show sign-in button
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem("userName"); // Clear the stored name
+            location.reload(); // Refresh the page to update the footer
+        }
+    </script>
+</body>
+</html>

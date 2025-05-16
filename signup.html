@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="../assets/styles/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #585858;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensure the body takes at least the full height of the viewport */
+        }
+        header {
+            background: #252525;
+            color: #ffffff;
+            padding: 10px 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Add shadow for depth */
+            z-index: 10; /* Ensure header is above other content */
+        }
+        main {
+            text-align: center;
+            background-color: #585858;
+            flex: 1; /* Allow main to grow and take available space */
+            padding: 20px; /* Add some padding for content */
+            border-radius: 15px; /* Rounded corners */
+            overflow: hidden; /* Ensure content doesn't overflow */
+        }
+        footer {
+            text-align: center;
+            padding: 10px 0; /* Adjusted padding for the footer */
+            background: rgba(37, 37, 37, 0.8); /* Slightly transparent background */
+            color: #ffffff;
+            position: fixed; /* Fix the footer to the bottom */
+            bottom: 0; /* Position it at the bottom */
+            width: 100%; /* Make it full width */
+            border-top-left-radius: 15px; /* Rounded corners */
+            border-top-right-radius: 15px; /* Rounded corners */
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3); /* Add shadow for depth */
+            line-height: 0.25; /* Keep your specified line height */
+        }
+        .footer-links {
+            margin-top: 5px; /* Space above the links */
+            font-size: 14px; /* Smaller font size for links */
+        }
+        .footer-links a {
+            color: #ffffff; /* Link color */
+            text-decoration: none; /* Remove underline */
+            margin: 0 10px; /* Space between links */
+        }
+        .footer-links a:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+        .input-field {
+            width: 90%; /* Set width to 90% for better centering */
+            height: 50px; /* Increased height */
+            border: 1px solid #ccc; /* Light grey border */
+            border-radius: 5px; /* Rounded corners */
+            padding: 10px; /* Padding inside the input */
+            background-color: #d3d3d3; /* Light grey background */
+            margin-bottom: 15px; /* Space between inputs */
+            font-size: 16px; /* Font size for input text */
+        }
+        .signup-button {
+            width: 100%; /* Full width */
+            height: 50px; /* Increased height */
+            border: none; /* Remove default border */
+            border-radius: 5px; /* Rounded corners */
+            background-color: #007BFF; /* Blue button color */
+            color: white; /* White text color */
+            cursor: pointer; /* Change cursor on hover */
+            transition: background-color 0.3s; /* Smooth transition */
+            font-size: 16px; /* Font size for button text */
+        }
+        .signup-button:hover {
+            background-color: #0056b3; /* Darker shade on hover */
+        }
+        html {
+            overflow-y: scroll; /* Always show vertical scrollbar */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Sign Up</h1>
+    </header>
+    
+    <div class="content" id="content">
+        <main>
+            <input type="text" id="new-soldier-name-input" class="input-field" placeholder="Enter your soldier name" />
+            <input type="password" id="new-password-input" class="input-field" placeholder="Enter your password" />
+            <button id="signup-button" class="signup-button">Sign Up</button>
+            <p id="signup-message" style="color: red; display: none;"></p> <!-- Message for signup -->
+        </main>
+    </div>
+    
+    <footer>
+        <p>&copy; 2023 Zane</p>
+        <div class="footer-links">
+            <a href="#" onclick="openGmail()">Contact</a>
+            <a href="../index.html">Home</a>
+            <a href="about.html">About</a>
+            <button id="logout-button" style="display: none;" onclick="logout()">Logout</button>
+            <button id="signin-button" style="display: none;" onclick="window.location.href='../index.html'">Sign In</button>
+        </div>
+    </footer>
+    
+    <script>
+        // Function to open Gmail compose window
+        function openGmail() {
+            window.open('https://mail.google.com/mail/?view=cm&fs=1&to=zaneamater@gmail.com', '_blank');
+        }
+
+        // Check if a name is already stored in localStorage
+        const storedName = localStorage.getItem("userName");
+        console.log("Stored Name in signup.html:", storedName); // Debugging log
+        if (storedName) {
+            console.log(`Welcome back, ${storedName}!`); // Example action
+            document.getElementById("logout-button").style.display = "inline"; // Show logout button
+        } else {
+            console.log("No user is logged in.");
+            document.getElementById("signin-button").style.display = "inline"; // Show sign-in button
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem("userName"); // Clear the stored name
+            location.reload(); // Refresh the page to update the footer
+        }
+
+        // Sign up functionality (existing code)
+        document.getElementById("signup-button").addEventListener("click", function() {
+            const newSoldierName = document.getElementById("new-soldier-name-input").value;
+            const newPassword = document.getElementById("new-password-input").value;
+
+            const newUser = { soldierName: newSoldierName, password: newPassword };
+
+            // Send a POST request to add the new user
+            fetch('http://localhost:3000/credentials', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newUser)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Soldier name already in use');
+                }
+                return response.text();
+            })
+            .then(message => {
+                document.getElementById("signup-message").innerText = message;
+                document.getElementById("signup-message").style.color = "green";
+                document.getElementById("signup-message").style.display = "block";
+                setTimeout(() => {
+                    window.location.href = "../index.html"; // Redirect to login page
+                }, 1000);
+            })
+            .catch(error => {
+                document.getElementById("signup-message").innerText = error.message;
+                document.getElementById("signup-message").style.color = "red";
+                document.getElementById("signup-message").style.display = "block";
+            });
+        });
+    </script>
+</body>
+</html>
