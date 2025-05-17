@@ -107,22 +107,23 @@
       background: rgba(0, 0, 0, 0.5);
       border-radius: 15px;
       padding: 10px 30px 30px 30px;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
       position: relative;
       cursor: default;
       animation: glow 3s linear infinite;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.1'/%3E%3C/svg%3E");
     }
     footer {
       text-align: center;
       padding: 10px 0;
-      background: rgba(37, 37, 37, 0.8);
+      background: linear-gradient(to top, #252525, #1a1a1a);
       color: #ffffff;
-      position: absolute;
+      position: fixed;
       bottom: 0;
       width: 100%;
-      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
-      z-index: 10;
-      cursor: default;
+      box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.3);
+      z-index: 5;
+      border-top: 2px solid rgba(255, 255, 255, 0.1);
     }
     .footer-links {
       margin-top: 5px;
@@ -137,10 +138,34 @@
       border: none;
       cursor: pointer;
       font-size: 14px;
+      transition: all 0.3s ease;
+      position: relative;
     }
     .footer-links a:hover,
     .footer-links button:hover {
-      text-decoration: underline;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+    }
+    .footer-links a::after,
+    .footer-links button::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      bottom: -2px;
+      left: 0;
+      background-color: currentColor;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+    }
+    .footer-links a:hover::after,
+    .footer-links button:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+    .footer-links a::before,
+    .footer-links button::before {
+      display: none !important;
     }
     .input-container {
       position: fixed;
@@ -150,7 +175,7 @@
       background: rgba(30, 30, 30, 0.9);
       border-radius: 15px;
       padding: 30px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
       z-index: 12;
       display: flex;
       flex-direction: column;
@@ -172,20 +197,35 @@
     .input-field {
       border: 1px solid #ccc;
       padding: 10px;
-      background-color: #d3d3d3;
+      background-color: rgba(255, 255, 255, 0.9);
+    }
+    .input-field:focus {
+      outline: none;
+      border-color: #007BFF;
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+      background-color: #fff;
     }
     .login-button {
       border: none;
       background-color: #007BFF;
       color: white;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
     .login-button:hover {
       background-color: #686868;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+    }
+    .login-button:active {
+      transform: translateY(0);
     }
     ::-webkit-scrollbar {
       width: 12px;
+      background: rgba(0, 0, 0, 0.2);
     }
     ::-webkit-scrollbar-track {
       background: rgba(0, 0, 0, 0.2);
@@ -196,6 +236,7 @@
       border-radius: 10px;
       border: 2px solid transparent;
       background-clip: content-box;
+      transition: background 0.3s ease;
     }
     ::-webkit-scrollbar-thumb:hover {
       background: #888;
@@ -217,9 +258,12 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: #252525;
+      background: linear-gradient(to bottom, #252525, #1a1a1a);
       padding: 10px 20px;
       position: relative;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+      animation: fadeInDown 1s ease-out;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
     .left, .center, .right {
       flex: 1;
@@ -234,6 +278,13 @@
     .logo {
       width: 80px;
       height: 90px;
+      transition: transform 0.3s ease;
+      transform: translateY(5px);
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    }
+    .logo:hover {
+      transform: scale(1.05) translateY(5px);
+      filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
     }
     .union-text {
       color: #ffffff;
@@ -313,7 +364,7 @@
       );
     }
     .film::after {
-      animation: film-scratch 0.45s steps(1) infinite;
+      animation: film-scratch 0.45s steps(1) infinite, grain 0.5s steps(1) infinite;
     }
     .effect::after {
       left: 30%;
@@ -368,6 +419,7 @@
       color: #fff;
       display: flex;
       gap: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
     #toggles input {
       display: none;              /* hide the actual checkbox */
@@ -387,19 +439,10 @@
       display: none !important;
     }
 
-    /* ── B&amp;W FILTER TOGGLE ── */
-    /* when checked, apply grayscale to your entire content wrapper */
+    /* ── B&W FILTER TOGGLE ── */
     #toggle-bw:checked ~ #page-blur-wrapper {
       filter: grayscale(100%);
       transition: filter 0.3s ease-in-out;
-    }
-
-    /* Toggle State Classes */
-    body.no-grain .film,
-    body.no-grain .effect,
-    body.no-grain .grain,
-    body.no-grain #shakewrap {
-      display: none !important;
     }
 
     body.bw {
@@ -409,6 +452,14 @@
 
     body.bw img {
       filter: grayscale(100%);
+    }
+
+    /* Toggle State Classes */
+    body.no-grain .film,
+    body.no-grain .effect,
+    body.no-grain .grain,
+    body.no-grain #shakewrap {
+      display: none !important;
     }
 
     /* Add shake effect wrapper */
@@ -426,15 +477,33 @@
       background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 65%, rgba(0, 0, 0, 1) 100%);
     }
 
-    /* Add shake effect to links */
-    a {
-      transition: color 0.25s, background 0.25s, background-color 0.25s, text-shadow 0.25s;
-      transform: translate(0px, 0px) rotate(0deg);
+    /* Add subtle underline effect */
+    a::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      bottom: -2px;
+      left: 0;
+      background-color: currentColor;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
     }
 
     a:hover {
       text-shadow: 0px 0px 18px rgba(255, 0, 0, 1);
       animation: shakes 0.1s linear infinite;
+    }
+
+    a:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    /* Add subtle text shadow to headings */
+    h1, h2, h3 {
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     }
 
     /* Add transition for smooth font changes */
@@ -484,6 +553,192 @@
     /* Footer text */
     .old-timey footer p {
       font-family: 'Spectral SC', serif !important;
+    }
+
+    /* Add impressive transitions */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes fadeInRight {
+      from {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0px);
+      }
+      50% {
+        transform: translateY(-5px);
+      }
+      100% {
+        transform: translateY(0px);
+      }
+    }
+
+    /* Apply animations to elements */
+    .page-header {
+      animation: fadeInDown 1s ease-out;
+    }
+
+    .logo {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .union-text {
+      animation: fadeInRight 1s ease-out;
+    }
+
+    .site-title {
+      animation: fadeInLeft 1s ease-out;
+    }
+
+    .intro-section {
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .navigation-overview {
+      animation: fadeInUp 1s ease-out 0.3s backwards;
+    }
+
+    footer {
+      animation: fadeInUp 1s ease-out;
+    }
+
+    /* Enhanced hover effects */
+    .navigation-overview a {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .navigation-overview a:hover {
+      transform: translateX(5px);
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+    }
+
+    .navigation-overview a::before {
+      content: '→';
+      position: absolute;
+      left: -20px;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .navigation-overview a:hover::before {
+      opacity: 1;
+      left: -15px;
+    }
+
+    /* Enhanced button effects */
+    .login-button {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .login-button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease;
+    }
+
+    .login-button:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    /* Enhanced input field effects */
+    .input-field {
+      transition: all 0.3s ease;
+    }
+
+    .input-field:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Add pulse animation to important elements */
+    .union-text:hover {
+      animation: pulse 1s infinite;
+    }
+
+    /* Enhanced film grain effect */
+    .film::after {
+      animation: film-scratch 0.45s steps(1) infinite, grain 0.5s steps(1) infinite, float 6s ease-in-out infinite;
+    }
+
+    /* Add transition to toggle panel */
+    #toggles {
+      transition: all 0.3s ease;
+    }
+
+    #toggles:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Add transition to footer links */
+    .footer-links a, .footer-links button {
+      transition: all 0.3s ease;
+    }
+
+    .footer-links a:hover, .footer-links button:hover {
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
     }
   </style>
 </head>
