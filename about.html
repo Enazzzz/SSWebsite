@@ -5,9 +5,268 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>About Us – SaveTheUnion.gov</title>
   <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Nothing+You+Could+Do|Special+Elite" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Spectral+SC&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <style>
+    @keyframes shakes {
+      0% {
+        transform: translate(2px, 1px) rotate(1deg);
+      }
+      50% {
+        transform: translate(-1px, 1px) rotate(0deg);
+      }
+      100% {
+        transform: translate(1px, -2px) rotate(0deg);
+      }
+    }
+
+    @keyframes bigshakes {
+      0% {
+        transform: translate(2px, -8px) rotate(-1deg);
+      }
+      50% {
+        transform: translate(-9px, 10px) rotate(-18deg);
+      }
+      100% {
+        transform: translate(6px, -2px) rotate(1deg);
+      }
+    }
+
+    @keyframes glow {
+      0% {
+        box-shadow: 0px 0px 40px rgba(255, 255, 255, 0.5);
+      }
+      50% {
+        box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.35);
+      }
+      100% {
+        box-shadow: 0px 0px 40px rgba(255, 255, 255, 0.5);
+      }
+    }
+
+    /* ——— FILM-GRAIN OVERLAY STYLES ——— */
+    .film, .effect, .grain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      overflow: hidden;
+    }
+    .film, .effect {
+      filter: blur(0.45px) drop-shadow(0 0 0 #fff1);
+    }
+    .film::after, .effect::after {
+      content: '';
+      position: absolute;
+      width: 120%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      padding-left: 100px;
+      opacity: 0.5;
+      background: repeating-linear-gradient(
+        90deg,
+        #0002 0 2px,
+        transparent 4px 37vmin
+      );
+    }
+    .film::after {
+      animation: film-scratch 0.45s steps(1) infinite;
+    }
+    .effect::after {
+      left: 30%;
+      animation: effect-scratch 2s infinite;
+    }
+    .grain::after {
+      content: '';
+      position: absolute;
+      width: 110%;
+      height: 110%;
+      top: -5%;
+      left: -5%;
+      opacity: 0.25;
+      background-image:
+        repeating-conic-gradient(#000 0%, transparent .0005%),
+        repeating-conic-gradient(#000 0%, transparent .0009%);
+      animation: grain 0.5s steps(1) infinite;
+      filter: drop-shadow(0 0 1px #000);
+    }
+
+    @keyframes grain {
+      0%,100%   { transform: translate(0,0); }
+      10%       { transform: translate(-1.2%,-1%); }
+      20%       { transform: translate(1.73845%,1.4444%); }
+      30%       { transform: translate(-2%,-2%); }
+      40%       { transform: translate(3%,3%); }
+      50%       { transform: translate(-3.324%,-3%); }
+      60%       { transform: translate(4%,4%); }
+      70%       { transform: translate(-4%,-4.2344%); }
+      80%       { transform: translate(2.1%,2%); }
+      90%       { transform: translate(-3%,-3.4444%); }
+    }
+
+    @keyframes film-scratch {
+      0%,100%   { transform: translateX(0); opacity: 0.5; }
+      30%       { transform: translateX(-2%); opacity: 0.75; }
+      80%       { transform: translateX(10%); opacity: 0.25; }
+    }
+
+    @keyframes effect-scratch {
+      0%        { transform: translateX(0); opacity: 0.75; }
+      50%       { transform: translateX(-3%); opacity: 0.5; }
+      100%      { transform: translateX(30%); }
+    }
+
+    /* ── TOGGLE PANEL STYLES ── */
+    #toggles {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 10000;
+      background: rgba(0,0,0,0.6);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      color: #fff;
+      display: flex;
+      gap: 12px;
+    }
+    #toggles input {
+      display: none;
+    }
+    #toggles label {
+      cursor: pointer;
+      user-select: none;
+    }
+    #toggles label:hover {
+      text-decoration: underline;
+    }
+
+    /* ── FILM-GRAIN TOGGLE ── */
+    #toggle-film:not(:checked) ~ .background-container .film,
+    #toggle-film:not(:checked) ~ .background-container .effect,
+    #toggle-film:not(:checked) ~ .background-container .grain {
+      display: none !important;
+    }
+
+    /* ── B&W FILTER TOGGLE ── */
+    /* when checked, apply grayscale to your entire content wrapper */
+    #toggle-bw:checked ~ #page-blur-wrapper {
+      filter: grayscale(100%);
+      transition: filter 0.3s ease-in-out;
+    }
+
+    body.bw {
+      filter: grayscale(100%);
+      transition: filter 0.3s ease-in-out;
+    }
+
+    body.bw img {
+      filter: grayscale(100%);
+    }
+
+    /* Toggle State Classes */
+    body.no-grain .film,
+    body.no-grain .effect,
+    body.no-grain .grain,
+    body.no-grain #shakewrap {
+      display: none !important;
+    }
+
+    /* Add transition for smooth font changes */
+    body, body * {
+      transition: font-family 0.5s ease, letter-spacing 0.5s ease;
+    }
+
+    /* Old-timey font styles */
+    .old-timey *:not(.logo):not(script):not(style):not(.input-container) {
+      letter-spacing: 0.03em;
+    }
+
+    /* Headers and titles - Commanding, historical tone */
+    .old-timey h1, 
+    .old-timey h2, 
+    .old-timey h3, 
+    .old-timey .site-title {
+      font-family: 'Special Elite', cursive !important;
+    }
+
+    /* Navigation and buttons - Period-appropriate legibility */
+    .old-timey .navigation-overview a,
+    .old-timey .footer-links a,
+    .old-timey .footer-links button {
+      font-family: 'Spectral SC', serif !important;
+    }
+
+    /* Main content text - Readable with hand-typed feel */
+    .old-timey .intro-section p,
+    .old-timey .navigation-overview p,
+    .old-timey .navigation-overview li {
+      font-family: 'Crimson Pro', serif !important;
+    }
+
+    /* Login/Input Text - Keep mostly readable */
+    .old-timey .input-field,
+    .old-timey .login-button,
+    .old-timey .login-popup p {
+      font-family: 'Cutive Mono', monospace !important;
+    }
+
+    /* Logo / Branding - Calligraphy for flair */
+    .old-timey .union-text {
+      font-family: 'Great Vibes', cursive !important;
+    }
+
+    /* Footer text */
+    .old-timey footer p {
+      font-family: 'Spectral SC', serif !important;
+    }
+
+    /* Add shake effect wrapper */
+    #shakewrap {
+      z-index: 9998;
+      pointer-events: none;
+      height: 100vmax;
+      width: 120%;
+      position: fixed;
+      top: -20px;
+      left: -20px;
+      animation: bigshakes 0.1s linear infinite;
+      opacity: 0.5;
+      background-color: #111;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 65%, rgba(0, 0, 0, 1) 100%);
+    }
+
+    /* Add shake effect to links */
+    a {
+      transition: color 0.25s, background 0.25s, background-color 0.25s, text-shadow 0.25s;
+      transform: translate(0px, 0px) rotate(0deg);
+    }
+
+    a:hover {
+      text-shadow: 0px 0px 18px rgba(255, 0, 0, 1);
+      animation: shakes 0.1s linear infinite;
+    }
+
+    /* Add glow effect to main content */
+    main {
+      animation: glow 3s linear infinite;
+    }
+
+    /* Original styles */
     html, body {
-      margin: 0; padding: 0; height: 100%; overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      position: fixed;
+      width: 100%;
     }
     body {
       background-color: #2e2e2e;
@@ -53,23 +312,36 @@
     }
     /* Content & Main */
     .content {
-      display: flex; justify-content: center; align-items: flex-start;
-      padding: 20px; color: #ebebeb;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 20px;
+      color: #ebebeb;
+      height: calc(100vh - 140px); /* Account for header and footer */
+      overflow-y: auto;
     }
     main {
-      width: 90%; max-width: 825px;
-      backdrop-filter: blur(10px); background: rgba(0,0,0,0.5);
-      border-radius: 15px; overflow-y: auto;
+      width: 90%;
+      max-width: 825px;
+      backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 15px;
       padding: 10px 30px 30px 30px;
-      box-shadow: 0 4px 30px rgba(0,0,0,0.1); position: relative;
-      color: #f0f0f0; line-height: 1.6;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      position: relative;
+      cursor: default;
     }
     /* Footer */
     footer {
-      text-align: center; padding: 10px 0;
-      background: rgba(37,37,37,0.8); color: #ffffff;
-      position: absolute; bottom: 0; width: 100%;
-      box-shadow: 0 -2px 5px rgba(0,0,0,0.3); z-index: 10;
+      text-align: center;
+      padding: 10px 0;
+      background: rgba(37, 37, 37, 0.8);
+      color: #ffffff;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+      z-index: 10;
     }
     .footer-links {
       margin-top: 5px; font-size: 14px;
@@ -120,6 +392,16 @@
   </style>
 </head>
 <body>
+  <div id="toggles">
+    <input type="checkbox" id="toggle-film" checked>
+    <label for="toggle-film">🎞️ Film-Grain</label>
+
+    <input type="checkbox" id="toggle-bw" checked>
+    <label for="toggle-bw">⚫⚪ B&W</label>
+  </div>
+
+  <div id="shakewrap"></div>
+
   <!-- Background + Parallax -->
   <div class="background-container">
     <img src="/images/background.jpg" class="background-image" alt="Background">
@@ -191,6 +473,9 @@
       window.open('https://mail.google.com/mail/?view=cm&fs=1&to=zaneamater@gmail.com','_blank');
     }
 
+    // Add bw class to body on load
+    document.body.classList.add('bw');
+
     // Auth logic (same as index.html)
     const inputContainer = document.getElementById('input-container');
     const pageWrapper    = document.getElementById('page-blur-wrapper');
@@ -251,6 +536,34 @@
       const y = window.scrollY;
       bg.style.transform = `scale(1.2) translateY(${y*0.3}px)`;
     });
+
+    // Add old-timey font toggle
+    const toggleFilm = document.getElementById('toggle-film');
+    toggleFilm.addEventListener('change', function () {
+      document.body.classList.toggle('old-timey', this.checked);
+    });
+
+    // Apply correct font state on load
+    if (toggleFilm.checked) {
+      document.body.classList.add('old-timey');
+    }
+
+    // Film-grain toggle
+    document
+      .getElementById('toggle-film')
+      .addEventListener('change', e =>
+        document.body.classList.toggle('no-grain', !e.target.checked)
+      );
+
+    // B&W toggle
+    document
+      .getElementById('toggle-bw')
+      .addEventListener('change', e =>
+        document.body.classList.toggle('bw', e.target.checked)
+      );
   </script>
+  <div class="film"></div>
+  <div class="effect"></div>
+  <div class="grain"></div>
 </body>
 </html>
