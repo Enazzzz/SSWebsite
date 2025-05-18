@@ -31,6 +31,18 @@ app.get('/signup.html', (req, res) => {
 app.get('/about.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'about.html'));
 });
+app.get('/training.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'training.html'));
+});
+app.get('/battles.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'battles.html'));
+});
+app.get('/hygiene.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'hygiene.html'));
+});
+app.get('/uniform.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'uniform.html'));
+});
 
 
 // ── Credentials API ─────────────────────────────────────────────────
