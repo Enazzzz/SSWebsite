@@ -948,7 +948,91 @@
   <script>
     const eggBtn = document.getElementById('easter-egg-btn');
     eggBtn.addEventListener('click', () => {
-      alert("🎉 You found the Easter Egg! 🎉");
+      // Create modal container
+      const modal = document.createElement('div');
+      modal.style.position = 'fixed';
+      modal.style.top = '50%';
+      modal.style.left = '50%';
+      modal.style.transform = 'translate(-50%, -50%)';
+      modal.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
+      modal.style.padding = '30px';
+      modal.style.borderRadius = '15px';
+      modal.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.4)';
+      modal.style.zIndex = '10000';
+      modal.style.textAlign = 'center';
+      modal.style.color = 'white';
+      modal.style.border = '2px solid rgba(255, 255, 255, 0.1)';
+      modal.style.backdropFilter = 'blur(10px)';
+      modal.style.backgroundImage = "url(\"data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.1'/%3E%3C/svg%3E\")";
+
+      // Create modal content
+      modal.innerHTML = `
+        <h2 style="
+          margin-bottom: 20px;
+          font-family: 'Special Elite', cursive;
+          text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+          animation: fadeInDown 1s ease-out;
+        ">🎉 You found the Easter Egg! 🎉</h2>
+        <p style="
+          margin-bottom: 20px;
+          font-family: 'Crimson Pro', serif;
+          animation: fadeInUp 1s ease-out;
+        ">Click the link below to claim your prize!</p>
+        <a href="https://gofund.me/6a397b38" target="_blank" style="
+          color: #fff;
+          text-decoration: none;
+          padding: 12px 24px;
+          background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+          border-radius: 5px;
+          display: inline-block;
+          transition: all 0.3s ease;
+          font-family: 'Spectral SC', serif;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+          animation: fadeInUp 1s ease-out 0.3s backwards;
+        ">Claim Your Prize</a>
+        <button onclick="this.parentElement.remove()" style="
+          display: block;
+          margin: 20px auto 0;
+          padding: 8px 16px;
+          background: rgba(255, 255, 255, 0.1);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          color: white;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          font-family: 'Cutive Mono', monospace;
+          animation: fadeInUp 1s ease-out 0.6s backwards;
+        ">Close</button>
+      `;
+
+      // Add hover effects
+      const link = modal.querySelector('a');
+      link.addEventListener('mouseover', () => {
+        link.style.transform = 'scale(1.05)';
+        link.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.4)';
+      });
+      link.addEventListener('mouseout', () => {
+        link.style.transform = 'scale(1)';
+        link.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.3)';
+      });
+
+      const closeBtn = modal.querySelector('button');
+      closeBtn.addEventListener('mouseover', () => {
+        closeBtn.style.background = 'rgba(255, 255, 255, 0.2)';
+      });
+      closeBtn.addEventListener('mouseout', () => {
+        closeBtn.style.background = 'rgba(255, 255, 255, 0.1)';
+      });
+
+      // Add modal to the page
+      document.body.appendChild(modal);
+
+      // Add click outside to close
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.remove();
+        }
+      });
     });
 
     // Add old-timey font toggle
